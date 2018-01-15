@@ -2,6 +2,7 @@
 
 const net = require('net')
 const minimist = require('minimist')
+const Client = require('./lib/line-delimited-json-protocol-client')
 const args = minimist(process.argv)
 const options = {}
 if (args.unixSocket) {
@@ -10,8 +11,8 @@ if (args.unixSocket) {
   options.port = 60300
 }
 const client = net.connect(options)
-client.on('data', data => {
-  const message = JSON.parse(data)
+const ldjClient = Client.connect(client)
+ldjClient.on('message', message => {
   if (message.type === 'watching') {
     console.log(`Now watching: ${message.file}`)
   } else if (message.type === 'changed') {
