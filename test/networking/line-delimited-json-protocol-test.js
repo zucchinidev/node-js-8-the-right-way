@@ -46,6 +46,9 @@ describe('LDJClient', () => {
     const secondEvent = JSON.stringify({ bar: 'foo' })
     const data = `${firstEvent}\n${secondEvent}\n`
     stream.emit('data', data)
+  })
 
+  it('should throw an error', () => {
+    assert.throws(() => new LDJClient(null), /stream parameter is mandatory/)
   })
 })
