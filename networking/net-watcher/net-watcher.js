@@ -11,7 +11,6 @@ let unixSocketOrPort = 60300
 if (args.unixSocket) {
   unixSocketOrPort = '/tmp/watcher.sock'
 }
-console.log(unixSocketOrPort)
 const { filename } = args
 if (typeof filename === 'string') {
   fs.access(filename, err => (err) ? console.log('No access!!') : createTCPServer(filename))
@@ -20,8 +19,10 @@ if (typeof filename === 'string') {
 function createTCPServer (filename) {
   net.createServer(connection => {
     console.log('Subscriber connected.')
-    connection.write(`Now watching ${filename} for changes...\n`)
-    const watcher = fs.watch(filename, () => connection.write(`File changed: ${new Date()}\n`))
+    connection.write(JSON.stringify({ type: 'watching', file: filename }) + '\n')
+    const watcher = fs.watch(filename, () => connection.write(
+      JSON.stringify({ type: 'changed', timestamp: Date.now() }) + '\n'
+    ))
 
     connection.on('close', () => {
       console.log('Subscriber disconnected')
