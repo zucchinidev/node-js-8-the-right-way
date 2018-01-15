@@ -7,6 +7,11 @@ const args = minimist(process.argv)
 if (!args.filename) {
   throw Error('Error: no filename specified.')
 }
+let unixSocketOrPort = 60300
+if (args.unixSocket) {
+  unixSocketOrPort = '/tmp/watcher.sock'
+}
+console.log(unixSocketOrPort)
 const { filename } = args
 if (typeof filename === 'string') {
   fs.access(filename, err => (err) ? console.log('No access!!') : createTCPServer(filename))
@@ -22,7 +27,9 @@ function createTCPServer (filename) {
       console.log('Subscriber disconnected')
       watcher.close()
     })
-  }).listen(60300, _ => console.log('Listening for subscribers...'))
+  }).listen(unixSocketOrPort, _ => console.log('Listening for subscribers...'))
 }
 
 // Create client: nc localhost 60300
+// watch -n -1 touch target.txt
+// node net-watcher.js --filename target.txt --unixSocket -> socat UNIX-CONNECT:/tmp/watcher.sock STDIN when we use unix socket
