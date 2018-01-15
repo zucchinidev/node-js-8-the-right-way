@@ -3,6 +3,9 @@ const { EventEmitter } = require('events')
 class LineDelimitedJSONProtocolClient extends EventEmitter {
   constructor (stream) {
     super()
+    if (!stream) {
+      throw new Error('stream parameter is mandatory')
+    }
     this.stream = stream
     this.buffer = ''
     this.setEvents()
