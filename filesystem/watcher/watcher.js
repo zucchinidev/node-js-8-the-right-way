@@ -15,14 +15,21 @@ if (!args.filename) {
 const { filename } = args
 fs.watch(filename, () => {
   const ls = spawn('ls', ['-l', '-h', filename])
-  let output = ''
-  ls.stdout.on('data', chunk => (output += chunk))
+  const output = { data: Buffer.from('', 'utf8') }
+  ls.stdout.on('data', concatData(output))
   ls.on('close', () => {
-    const parts = output.split(/\s+/)
+    const parts = output.data.toString().split(/\s+/)
     const permissions = parts[0]
     const size = parts[4]
     const filename = parts[8]
     console.log([permissions, size, filename])
   })
 })
+
+function concatData (output) {
+  return (chunk) => {
+    output.data = Buffer.concat([output.data, chunk])
+  }
+}
+
 console.log(`Now watching ${filename} for changes...`)
