@@ -39,6 +39,11 @@ function printData (output) {
     const permissions = parts[0]
     const size = parts[4]
     const filename = parts[8]
+    const fileHasBeenDeleted = typeof filename === 'undefined'
+    if (fileHasBeenDeleted) {
+      console.log('An error has occurred')
+      process.exit(-1)
+    }
     console.log([permissions, size, filename])
   }
 }
