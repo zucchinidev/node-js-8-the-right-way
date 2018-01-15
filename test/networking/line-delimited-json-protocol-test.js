@@ -29,4 +29,23 @@ describe('LDJClient', () => {
     stream.emit('data', '{ "foo":')
     process.nextTick(() => stream.emit('data', '"bar"}\n'))
   })
+
+  it('should emit two message event from a compose data event', done => {
+    let count = 0
+    client.on('message', message => {
+      count += 1
+      if (count === 2) {
+        assert.deepEqual(message, { bar: 'foo' })
+        done()
+      } else {
+        assert.deepEqual(message, { foo: 'bar' })
+      }
+    })
+
+    const firstEvent = JSON.stringify({ foo: 'bar' })
+    const secondEvent = JSON.stringify({ bar: 'foo' })
+    const data = `${firstEvent}\n${secondEvent}\n`
+    stream.emit('data', data)
+
+  })
 })
