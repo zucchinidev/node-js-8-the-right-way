@@ -1,7 +1,6 @@
 'use strict'
 
 const cluster = require('cluster')
-const fs = require('fs')
 const zmq = require('zeromq')
 const createReplaySocket = require('./zmq-filer-replay')
 const numWorkers = require('os').cpus().length
