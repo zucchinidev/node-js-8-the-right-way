@@ -5,5 +5,5 @@ const ipcAddr = 'ipc://file-work.ipc'
 
 const producer = zmq.socket('push')
 producer.bindSync(ipcAddr)
-const works = [...Array(30).keys()]
+const works = [...Array(100).keys()]
 works.forEach(w => producer.send(`some work number: ${w}`))
