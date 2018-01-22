@@ -29,6 +29,10 @@ function getLCC ($pgterms) {
     .text()
 }
 
+function getLink ($pgterms) {
+  return $pgterms.find('pgterms\\:file[rdf\\:about$=".utf-8"]').attr('rdf:about')
+}
+
 module.exports = rdf => {
   const $ = cheerio.load(rdf)
   const $pgterms = $('pgterms\\:ebook')
@@ -37,5 +41,6 @@ module.exports = rdf => {
   const authors = getBookAuthors($, $pgterms)
   const subjects = getBookSubjects($pgterms, $)
   const lcc = getLCC($pgterms)
-  return { id, title, authors, subjects, lcc }
+  const link = getLink($pgterms)
+  return { id, title, authors, subjects, lcc, link }
 }

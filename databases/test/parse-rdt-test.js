@@ -20,5 +20,6 @@ describe('parseRFD', () => {
     expect(book.lcc).to.be.a('string')
     const isCorrectValue = /[A-Z]/gi.test(book.lcc) && /[^IOWXY]/gi.test(book.lcc)
     expect(isCorrectValue).to.equal(true)
+    expect(book).to.have.a.property('link', 'http://www.gutenberg.org/ebooks/132.txt.utf-8')
   })
 })
