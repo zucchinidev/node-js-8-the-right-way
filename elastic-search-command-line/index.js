@@ -31,6 +31,26 @@ commander
   .description('generate the URL for the options and path (default is /)')
   .action((path = '/') => console.log(fullUrl(path)))
 
+commander
+  .command('get [path]')
+  .description('perform an HTTP GET request for path (default is /)')
+  .action((path = '/') => {
+    const options = {
+      url: fullUrl(path),
+      json: commander.json
+    }
+    request(options, (err, res, body) => {
+      if (commander.json) {
+        console.log(JSON.stringify(err || body))
+      } else {
+        if (err) {
+          throw err
+        }
+        console.log(body)
+      }
+    })
+  })
+
 commander.parse(process.argv)
 if (!commander.args.filter(arg => typeof arg === 'object').length) {
   commander.help()
@@ -38,3 +58,17 @@ if (!commander.args.filter(arg => typeof arg === 'object').length) {
 
 // ./es-cli.js url 'some/path' -p 8080 -o my.cluster
 // http://my.cluster:8080/some/path
+
+//  the _cat endpoint offers a humanreadable
+// (non-JSON) API for assessing the health and status of your cluster.
+// ./es-cli.js get '_cat'
+/*
+/_cat/allocation
+/_cat/shards
+/_cat/shards/{index}
+/_cat/master
+/_cat/nodes
+....
+....
+*/
+
