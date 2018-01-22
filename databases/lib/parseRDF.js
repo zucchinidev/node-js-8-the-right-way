@@ -6,7 +6,7 @@ function getBookId ($pgterms) {
 }
 
 function getBookTitle ($pgterms) {
-  $pgterms.find('dcterms\\:title').text()
+  return $pgterms.find('dcterms\\:title').text()
 }
 
 function getBookAuthors ($, $pgterms) {
