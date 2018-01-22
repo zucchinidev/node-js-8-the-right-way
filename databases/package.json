@@ -15,6 +15,7 @@
     "mocha": "2.4.5"
   },
   "dependencies": {
-    "cheerio": "0.22.0"
+    "cheerio": "0.22.0",
+    "node-dir": "0.1.16"
   }
 }
