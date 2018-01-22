@@ -17,5 +17,8 @@ describe('parseRFD', () => {
       .that.is.an('array').with.lengthOf(2)
       .and.contains('Military art and science -- Early works to 1800')
       .and.contains('War -- Early works to 1800')
+    expect(book.lcc).to.be.a('string')
+    const isCorrectValue = /[A-Z]/gi.test(book.lcc) && /[^IOWXY]/gi.test(book.lcc)
+    expect(isCorrectValue).to.equal(true)
   })
 })

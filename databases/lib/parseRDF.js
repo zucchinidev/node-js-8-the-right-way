@@ -22,6 +22,13 @@ function getBookSubjects ($pgterms, $) {
     .map(subject => $(subject).text())
 }
 
+function getLCC ($pgterms) {
+  return $pgterms.find('[rdf\\:resource$="/LCC"]')
+    .parent()
+    .find('rdf\\:value')
+    .text()
+}
+
 module.exports = rdf => {
   const $ = cheerio.load(rdf)
   const $pgterms = $('pgterms\\:ebook')
@@ -29,5 +36,6 @@ module.exports = rdf => {
   const title = getBookTitle($pgterms)
   const authors = getBookAuthors($, $pgterms)
   const subjects = getBookSubjects($pgterms, $)
-  return { id, title, authors, subjects }
+  const lcc = getLCC($pgterms)
+  return { id, title, authors, subjects, lcc }
 }
