@@ -1,9 +1,14 @@
 'use strict'
 
-const fs = require('fs')
 const request = require('request')
 const commander = require('commander')
 const { version, description } = require('./package')
+
+const COMMANDS = {
+  url: 'url [path]',
+  get: 'get [path]',
+  createIndex: 'create-index'
+}
 
 const fullUrl = (path = '') => {
   let url = `http://${commander.host}:${commander.port}/`
@@ -14,6 +19,21 @@ const fullUrl = (path = '') => {
     }
   }
   return `${url}${path.replace(/^\/*/, '')}`
+}
+
+const onCreateIndexCommand = (...args) => handleResponse(...args)
+const onGetDataCommand = (...args) => handleResponse(...args)
+
+const handleResponse = (err, res, body) => {
+  if (err) {
+    throw err
+  }
+
+  const isJsonFormatSelected = commander.json
+  if (isJsonFormatSelected) {
+    return console.log(JSON.stringify(err || body))
+  }
+  console.log(body)
 }
 
 commander
@@ -27,28 +47,33 @@ commander
   .option('-t, --type <type>', 'default type for bulk operations')
 
 commander
-  .command('url [path]')
+  .command(COMMANDS.url)
   .description('generate the URL for the options and path (default is /)')
   .action((path = '/') => console.log(fullUrl(path)))
 
 commander
-  .command('get [path]')
+  .command(COMMANDS.get)
   .description('perform an HTTP GET request for path (default is /)')
   .action((path = '/') => {
     const options = {
       url: fullUrl(path),
       json: commander.json
     }
-    request(options, (err, res, body) => {
-      if (commander.json) {
-        console.log(JSON.stringify(err || body))
-      } else {
-        if (err) {
-          throw err
-        }
-        console.log(body)
+    request(options, onGetDataCommand)
+  })
+
+commander.command(COMMANDS.createIndex)
+  .description('create an index')
+  .action(() => {
+    if (!commander.index) {
+      const message = 'No index specified! Use --index <name>'
+      if (!commander.json) {
+        throw new Error(message)
       }
-    })
+      console.log(JSON.stringify({ error: message }))
+      return
+    }
+    request.put(fullUrl(), onCreateIndexCommand)
   })
 
 commander.parse(process.argv)
@@ -71,4 +96,3 @@ if (!commander.args.filter(arg => typeof arg === 'object').length) {
 ....
 ....
 */
-
