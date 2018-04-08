@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const fs = require('fs')
 const minimist = require('minimist')
-const parseRDF = require('./')
+const parseRDF = require('./lib/parseRDF')
 const args = minimist(process.argv)
 const rdf = fs.readFileSync(args.filename)
 const book = parseRDF(rdf)

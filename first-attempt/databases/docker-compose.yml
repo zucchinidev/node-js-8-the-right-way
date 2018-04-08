@@ -4,7 +4,7 @@ services:
 
   elasticsearch:
     build:
-      context: elasticsearch/
+      context: elasticsearch
     volumes:
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
     ports:
