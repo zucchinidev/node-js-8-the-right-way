@@ -6,4 +6,4 @@ const { createServerWatcher } = require('./server')
 if (!filename) {
   throw Error('Error: No filename specified')
 }
-createServerWatcher(filename).listen(60300, () => console.log('Listening for subscribers...'))
+createServerWatcher(filename).listen('/tmp/watcher.sock', () => console.log('Listening for subscribers...'))
