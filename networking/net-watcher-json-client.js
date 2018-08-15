@@ -9,7 +9,7 @@ client.on('data', data => {
       ? console.log(`Now watching: ${message.file}`)
       : (message.type === 'changed')
       ? console.log(`File changed: ${new Date(message.timestamp)}`)
-      : console.log(`Unreconized message type: ${message.type}`)
+      : console.log(`Unrecognized message type: ${message.type}`)
   } catch (err) {
     console.log(`Opps... ${err}`)
     process.exit(1)
