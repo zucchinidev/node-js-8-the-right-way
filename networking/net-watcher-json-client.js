@@ -11,6 +11,7 @@ client.on('data', data => {
       ? console.log(`File changed: ${new Date(message.timestamp)}`)
       : console.log(`Unreconized message type: ${message.type}`)
   } catch (err) {
-
+    console.log(`Opps... ${err}`)
+    process.exit(1)
   }
 })
