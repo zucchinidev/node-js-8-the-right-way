@@ -4,7 +4,9 @@
   "description": "Exercises to continue learning Node.js",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive"
+    "test": "jest --config test/unit/jest.conf.js",
+    "test:coverage": "jest --config test/jest.conf.js --coverage",
+    "lint": "eslint src/**"
   },
   "keywords": [
     "Nodejs"
@@ -15,7 +17,13 @@
     "minimist": "^1.2.0"
   },
   "devDependencies": {
-    "mocha": "3.4.2",
-    "standard": "^10.0.3"
+    "eslint": "5.3.0",
+    "eslint-config-standard": "11.0.0",
+    "eslint-plugin-import": "2.14.0",
+    "eslint-plugin-jest": "21.21.0",
+    "eslint-plugin-node": "7.0.1",
+    "eslint-plugin-promise": "3.8.0",
+    "eslint-plugin-standard": "3.1.0",
+    "jest": "23.5.0"
   }
 }
