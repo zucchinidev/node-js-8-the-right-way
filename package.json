@@ -14,7 +14,8 @@
   "author": "Andrea Zucchini <azga84@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "zeromq": "4.6.0"
   },
   "devDependencies": {
     "eslint": "5.3.0",
