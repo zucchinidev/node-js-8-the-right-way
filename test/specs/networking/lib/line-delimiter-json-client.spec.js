@@ -1,5 +1,21 @@
+const { EventEmitter } = require('events')
+
+const LineDelimiterJsonClient = require('../../../../networking/lib/line-delimiter-json-client')
+
 describe('line-delimiter-json-client', () => {
-  it(`should be true`, () => {
-    expect(true).toEqual(true)
+  let stream = null
+  let client = null
+
+  beforeEach(() => {
+    stream = new EventEmitter()
+    client = new LineDelimiterJsonClient(stream)
+  })
+
+  it(`should emit a message event from a single data event`, done => {
+    client.on('message', message => {
+      expect(message).toEqual({ foo: 'bar' })
+      done()
+    })
+    stream.emit('data', '{"foo": "bar"}\n')
   })
 })
