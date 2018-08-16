@@ -1,6 +1,6 @@
 const { EventEmitter } = require('events')
 
-const LineDelimiterJsonClient = require('../../../../networking/lib/line-delimiter-json-client')
+const LineDelimiterJsonClient = require('../../../../src/networking/lib/line-delimiter-json-client')
 
 describe('line-delimiter-json-client', () => {
   let stream = null
