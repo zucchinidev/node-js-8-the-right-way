@@ -10,7 +10,8 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/lib/$1'
   },
   testPathIgnorePatterns: [
-    '/node_modules/'
+    '/node_modules/',
+    '/src/data'
     // add here external dependencies
   ],
   setupFiles: ['<rootDir>/test/setup'],
