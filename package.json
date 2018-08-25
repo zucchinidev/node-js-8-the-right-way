@@ -14,6 +14,7 @@
   "author": "Andrea Zucchini <azga84@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "cheerio": "1.0.0-rc.2",
     "minimist": "^1.2.0",
     "zeromq": "4.6.0"
   },
