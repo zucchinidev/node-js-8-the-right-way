@@ -4,7 +4,7 @@
   "description": "Exercises to continue learning Node.js",
   "main": "index.js",
   "scripts": {
-    "test": "jest --config test/unit/jest.conf.js",
+    "test": "jest --config test/jest.conf.js",
     "test:coverage": "jest --config test/jest.conf.js --coverage",
     "lint": "eslint src/**"
   },
@@ -16,6 +16,7 @@
   "dependencies": {
     "cheerio": "1.0.0-rc.2",
     "minimist": "^1.2.0",
+    "node-dir": "^0.1.17",
     "zeromq": "4.6.0"
   },
   "devDependencies": {
