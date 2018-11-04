@@ -1,3 +1,4 @@
 .idea
 node_modules
 src/data/cache
+src/elasticsearch-cli/node_modules
