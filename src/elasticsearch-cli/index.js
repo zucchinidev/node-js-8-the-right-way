@@ -73,6 +73,34 @@ program.command('list-indices')
     request({ url, json: isJson() }, handleResponse)
   })
 
+// ./bin.js bulk ../data/bulk_pg.ldj -i books -t book > ../data/bulk_result.json
+program.command('bulk <file>')
+  .description('Read and perform bulk options from the specified file')
+  .action(file => {
+    fs.stat(file, (err, stats) => {
+      if (err) {
+        if (isJson()) {
+          return console.log(JSON.stringify(err))
+        }
+        throw err
+      }
+      const options = {
+        url: fullUrl('_bulk'),
+        json: true,
+        headers: {
+          'content-length': stats.size,
+          'content-type': 'application/json'
+        }
+      }
+      const req = request.post(options)
+      fs.createReadStream(file).pipe(req)
+      req.pipe(process.stdout)
+    })
+    const path = isJson() ? '_all' : '_cat/indices?v'
+    const url = fullUrl(path)
+    request({ url, json: isJson() }, handleResponse)
+  })
+
 program.parse(process.argv)
 const isObject = arg => typeof arg === 'object'
 const hasDefinedCommands = program.args.filter(isObject).length
