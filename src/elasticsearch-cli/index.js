@@ -61,8 +61,16 @@ program.command('create-index')
         return
       }
     }
-
     request.put(fullUrl(), handleResponse)
+  })
+
+program.command('list-indices')
+  .alias('li')
+  .description('Get a list of indices in the cluster')
+  .action(() => {
+    const path = isJson() ? '_all' : '_cat/indices?v'
+    const url = fullUrl(path)
+    request({ url, json: isJson() }, handleResponse)
   })
 
 program.parse(process.argv)
