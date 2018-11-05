@@ -17,7 +17,7 @@ function fullUrl (path = '') {
 }
 
 function handleResponse (err, res, body) {
-  if (program.json) {
+  if (isJson()) {
     console.log(JSON.stringify(err || body))
   } else {
     if (err) {
@@ -47,6 +47,22 @@ program.command('get [path]')
       json: program.json
     }
     request(options, handleResponse)
+  })
+
+program.command('create-index')
+  .description('Create an index in Elasticsearch')
+  .action(() => {
+    if (!program.index) {
+      const msg = 'No index specified! Use --index <indexName>'
+      if (!isJson()) {
+        throw Error(msg)
+      } else {
+        console.log(JSON.stringify({ error: msg }))
+        return
+      }
+    }
+
+    request.put(fullUrl(), handleResponse)
   })
 
 program.parse(process.argv)
