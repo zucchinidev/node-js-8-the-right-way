@@ -38,6 +38,7 @@ program
   .option('-j, --json', 'format output as JSON')
   .option('-i, --index <name>', 'which index to use')
   .option('-t, --type <type>', 'default type for bulk operations')
+  .option('-f, --filter <filter>', 'source filter for query results')
 
 program.command('get [path]')
   .description('generate the URL for the options and path (default is /)')
@@ -99,6 +100,30 @@ program.command('bulk <file>')
     const path = isJson() ? '_all' : '_cat/indices?v'
     const url = fullUrl(path)
     request({ url, json: isJson() }, handleResponse)
+  })
+
+// ./bin.js get '_search/?q=authors:Dante&_source=title' | jq '[ .hits.hits[]._source.title ]' | head -n 20
+// The same
+// ./bin.js q authors:Dante AND title:Divina -f title,authors | jq '.hits.hits[]._source' | head -n 40
+program.command('query [queries...]')
+  .alias('q')
+  .description('Perform an Elasticsearch query')
+  .action((queries = []) => {
+    const qs = {}
+    if (queries && queries.length) {
+      qs.q = queries.join(' ')
+    }
+
+    if (program.filter) {
+      qs._source = program.filter
+    }
+
+    const options = {
+      url: fullUrl('_search'),
+      json: isJson(),
+      qs: qs
+    }
+    request(options, handleResponse)
   })
 
 program.parse(process.argv)
