@@ -126,6 +126,21 @@ program.command('query [queries...]')
     request(options, handleResponse)
   })
 
+program.command('delete-index')
+  .description('Delete a index in Elasticsearch')
+  .action(() => {
+    if (!program.index) {
+      const msg = 'No index specified! Use --index <indexName>'
+      if (!isJson()) {
+        throw Error(msg)
+      } else {
+        console.log(JSON.stringify({ error: msg }))
+        return
+      }
+    }
+    request.delete(fullUrl(), handleResponse)
+  })
+
 program.parse(process.argv)
 const isObject = arg => typeof arg === 'object'
 const hasDefinedCommands = program.args.filter(isObject).length
